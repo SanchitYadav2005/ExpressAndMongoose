@@ -18,7 +18,13 @@ mongoose.connect("mongodb://localhost:27017/farmStand")
     })
 // importing the product file here.
 
-const Product = require('./models/product')
+const Product = require('./models/product');
+
+app.get('/products', async (req, res)=>{
+    // finding all products.
+    const products = await Product.find({})
+    res.render("product/index", {products});
+})
 
 app.listen(port, (err)=>{
     if(err){
