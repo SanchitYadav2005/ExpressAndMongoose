@@ -24,6 +24,15 @@ app.get('/products', async (req, res)=>{
     // finding all products.
     const products = await Product.find({})
     res.render("product/index", {products});
+});
+
+// creating a route for showing the details of products.
+app.get('/products/:id', async (req,res)=>{
+    //getting the id form the url.
+    const {id} = req.params;
+    const product = await Product.findById(id);
+    console.log(product)
+    res.send("working");
 })
 
 app.listen(port, (err)=>{
