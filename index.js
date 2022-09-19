@@ -31,8 +31,7 @@ app.get('/products/:id', async (req,res)=>{
     //getting the id form the url.
     const {id} = req.params;
     const product = await Product.findById(id);
-    console.log(product)
-    res.send("working");
+    res.render('product/details', {product})
 })
 
 app.listen(port, (err)=>{
