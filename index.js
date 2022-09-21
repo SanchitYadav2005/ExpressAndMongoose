@@ -7,6 +7,7 @@ const port = 3000;
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(express.urlencoded({extended: true}))
 
 mongoose.connect("mongodb://localhost:27017/farmStand")
     .then(()=>{
@@ -25,14 +26,23 @@ app.get('/products', async (req, res)=>{
     const products = await Product.find({})
     res.render("product/index", {products});
 });
-
+// sending web page to create new product.
+app.get('/products/new', (req,res)=>{
+    res.render('product/new')
+});
+app.post('/products', async (req,res)=>{
+    const newProduct = new Product(req.body)
+    await newProduct.save()
+    res.redirect(`/products/${newProduct._id}`)
+})
 // creating a route for showing the details of products.
 app.get('/products/:id', async (req,res)=>{
     //getting the id form the url.
     const {id} = req.params;
     const product = await Product.findById(id);
     res.render('product/details', {product})
-})
+});
+
 
 app.listen(port, (err)=>{
     if(err){
